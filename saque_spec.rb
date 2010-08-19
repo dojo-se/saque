@@ -1,21 +1,31 @@
 class Cash
   MONEY = {
-            '1' => 10, '2' => 10, '5' => 10,
-            '10' => 5, '20' => 5, '50' => 5,
-            '100' => 3
+            1 => 10, 2 => 10, 5 => 10,
+            10 => 5, 20 => 5, 50 => 5,
+            100 => 3
           }
 
   def self.saque(valor)
+    retorno = []
+    MONEY.keys.sort.reverse.each do | chave |
+    if valor > chave
+      	retorno << chave 
+      	#saque(valor - chave)
+    end   
+    end
+  
     if valor == 1
-      MONEY[valor.to_s] = MONEY[valor.to_s] - 1
+      MONEY[valor] = MONEY[valor] - 1
       [1]
     elsif valor == 279
       [100, 100, 50, 20, 5, 2, 2]
     elsif valor >= 10 and valor < 20
-      MONEY['10'] = MONEY['10'] - 1
+      MONEY[10] = MONEY[10] - 1
       resto = valor % 10
-      MONEY[resto.to_s] = MONEY[resto.to_s] - 1
+      MONEY[resto] = MONEY[resto] - 1
       [10, resto]
+    elsif
+    	retorno
     end
   end
 end
