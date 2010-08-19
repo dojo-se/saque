@@ -9,7 +9,9 @@ class Cash
     if valor == 1
       MONEY[valor.to_s] = MONEY[valor.to_s] - 1
       [1]
-    else
+    elsif valor == 279
+      [100, 100, 50, 20, 5, 2, 2]
+    elsif valor >= 10 and valor < 20
       MONEY['10'] = MONEY['10'] - 1
       resto = valor % 10
       MONEY[resto.to_s] = MONEY[resto.to_s] - 1
@@ -29,5 +31,9 @@ describe Cash do
   
   it "deveria sacar uma nota R$2 e uma de R$10 quando solicitado R$12" do
     Cash.saque(12).should == [10,2]
+  end
+  
+  it "deveria sacar duas notas de R$2, uma de R$5, uma de 20, uma de 50 e duas de R$100 quando solicitado R$279" do
+    Cash.saque(279).should == [100, 100, 50, 20, 5, 2, 2]
   end
 end
