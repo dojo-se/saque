@@ -8,13 +8,13 @@ class Cash
   def self.saque(valor)
     retorno = []
     valorNovo = valor
-    MONEY.keys.sort.reverse.each do | chave |
-    #[100, 50, 20, 10, 5, 2, 1]
-    if valorNovo >= chave
-      	retorno << chave 
-      	valorNovo -= chave
-      	#saque(valor - chave)
-    end   
+    
+    MONEY.keys.sort.reverse.each do |chave|
+      if valorNovo >= chave
+        cedulas = retire_cedula(chave,valorNovo)
+        valorNovo -= cedulas.size * chave
+        retorno.concat cedulas
+      end   
     end
   
     if valor == 1
@@ -31,6 +31,26 @@ class Cash
     	retorno
     end
   end
+
+  private
+  
+  def self.retire_cedula(cedula,valor)
+    divisao = valor / cedula
+    
+    retorno = []
+    if divisao > MONEY[cedula]
+      MONEY[cedula].times do |a|
+        retorno << cedula
+      end
+    else
+      divisao.times do |a|
+        retorno << cedula
+      end
+    end
+    
+    retorno
+  end  
+  
 end
 
 describe Cash do
@@ -52,6 +72,10 @@ describe Cash do
 
   it "deveria sacar 1 nota de R$100" do
     Cash.saque(100).should == [100]
+  end
+  
+  it "deveria sacar 3 notas de R$100 e 2 de R$50 quando solicitado R$400" do
+    Cash.saque(400).should == [100,100,100,50,50]
   end
 
 end
