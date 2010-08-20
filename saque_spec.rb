@@ -7,29 +7,16 @@ class Cash
 
   def self.saque(valor)
     retorno = []
-    valorNovo = valor
     
     MONEY.keys.sort.reverse.each do |chave|
-      if valorNovo >= chave
-        cedulas = retire_cedula(chave,valorNovo)
-        valorNovo -= cedulas.size * chave
+      if valor >= chave
+        cedulas = retire_cedula(chave,valor)
+        valor -= cedulas.size * chave
         retorno.concat cedulas
       end   
     end
   
-    if valor == 1
-      MONEY[valor] = MONEY[valor] - 1
-      [1]
-    elsif valor == 279
-      [100, 100, 50, 20, 5, 2, 2]
-    elsif valor >= 10 and valor < 20
-      MONEY[10] = MONEY[10] - 1
-      resto = valor % 10
-      MONEY[resto] = MONEY[resto] - 1
-      [10, resto]
-    else
-    	retorno
-    end
+  	retorno
   end
 
   private
