@@ -15,8 +15,10 @@ class Cash
         retorno.concat cedulas
       end   
     end
-  
-  	retorno
+    
+    raise Exception.new if valor > 0
+
+   	retorno
   end
 
   private
@@ -65,4 +67,12 @@ describe Cash do
     Cash.saque(400).should == [100,100,100,50,50]
   end
 
+  it "devera retornar vazio quando solicitar saque R$0" do
+    Cash.saque(0).should == []
+  end
+  
+  it "deveria retornar erro quando solicitado R$500000" do
+    lambda{ Cash.saque(500000) }.should raise_exception
+  end  
+  
 end
