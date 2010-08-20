@@ -7,9 +7,12 @@ class Cash
 
   def self.saque(valor)
     retorno = []
+    valorNovo = valor
     MONEY.keys.sort.reverse.each do | chave |
-    if valor > chave
+    #[100, 50, 20, 10, 5, 2, 1]
+    if valorNovo >= chave
       	retorno << chave 
+      	valorNovo -= chave
       	#saque(valor - chave)
     end   
     end
@@ -24,7 +27,7 @@ class Cash
       resto = valor % 10
       MONEY[resto] = MONEY[resto] - 1
       [10, resto]
-    elsif
+    else
     	retorno
     end
   end
@@ -46,4 +49,9 @@ describe Cash do
   it "deveria sacar duas notas de R$2, uma de R$5, uma de 20, uma de 50 e duas de R$100 quando solicitado R$279" do
     Cash.saque(279).should == [100, 100, 50, 20, 5, 2, 2]
   end
+
+  it "deveria sacar 1 nota de R$100" do
+    Cash.saque(100).should == [100]
+  end
+
 end
